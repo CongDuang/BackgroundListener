@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import java.lang.Exception
 import java.util.concurrent.CopyOnWriteArrayList
@@ -19,7 +20,7 @@ class BackgroundListener : Application.ActivityLifecycleCallbacks {
     var isForeground = false
     var isPaused = true
 
-    private val handler = Handler()
+    private val handler = Handler(Looper.myLooper()!!)
 
     private val listeners = CopyOnWriteArrayList<Listener>()
 
@@ -61,12 +62,10 @@ class BackgroundListener : Application.ActivityLifecycleCallbacks {
             handler.removeCallbacks(check!!)
         }
         if (wasBackground) {
-            listeners.forEach {
-                try {
-                    it.onBecameForeground()
-                } catch (e: Exception) {
-                    Log.e(TAG, "onBecameForeground：", e)
-                }
+            try {
+                listeners.last().onBecameBackground()
+            } catch (e: Exception) {
+                Log.e(TAG, "onBecameForeground: ", e)
             }
         }
     }
@@ -79,12 +78,10 @@ class BackgroundListener : Application.ActivityLifecycleCallbacks {
         check = Runnable {
             if (isForeground && isPaused) {
                 isForeground = false
-                listeners.forEach {
-                    try {
-                        it.onBecameBackground()
-                    } catch (e: Exception) {
-                        Log.e(TAG, "onActivityPaused: ", e)
-                    }
+                try {
+                    listeners.last().onBecameBackground()
+                } catch (e: Exception) {
+                    Log.e(TAG, "onBecameBackground: ", e)
                 }
             }
 
@@ -103,7 +100,7 @@ class BackgroundListener : Application.ActivityLifecycleCallbacks {
 
     companion object {
         const val TAG = "BackgroundListener"
-        const val CHECK_DELAY = 400L
+        const val CHECK_DELAY = 600L
         var instance: BackgroundListener? = null
 
         /**
