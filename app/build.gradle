@@ -1,15 +1,19 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
 }
 
 android {
-    compileSdk 31
-
+    namespace 'com.mps.backgroundlistener'
+    compileSdk {
+        version = release(35)
+    }
     defaultConfig {
         applicationId "com.mps.backgroundlistener"
-        minSdk 16
-        targetSdk 31
+        minSdk 21
+        targetSdk 35
         versionCode 1
         versionName "1.0"
 
@@ -23,11 +27,13 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
-    kotlinOptions {
-        jvmTarget = '1.8'
+}
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_21
     }
 }
 

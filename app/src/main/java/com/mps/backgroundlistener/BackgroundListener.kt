@@ -17,7 +17,7 @@ import java.util.concurrent.CopyOnWriteArrayList
  */
 class BackgroundListener : Application.ActivityLifecycleCallbacks {
 
-    var isForeground = false
+    var isForeground = true
     var isPaused = true
 
     private val handler = Handler(Looper.myLooper()!!)
@@ -63,7 +63,7 @@ class BackgroundListener : Application.ActivityLifecycleCallbacks {
         }
         if (wasBackground) {
             try {
-                listeners.last().onBecameBackground()
+                listeners.last().onBecameForeground()
             } catch (e: Exception) {
                 Log.e(TAG, "onBecameForeground: ", e)
             }
@@ -100,7 +100,7 @@ class BackgroundListener : Application.ActivityLifecycleCallbacks {
 
     companion object {
         const val TAG = "BackgroundListener"
-        const val CHECK_DELAY = 600L
+        const val CHECK_DELAY = 200L
         var instance: BackgroundListener? = null
 
         /**

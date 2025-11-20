@@ -22,13 +22,13 @@ open class BaseActivity:AppCompatActivity() {
             override fun onBecameForeground() {
                 // 开启了 密码验证 并且 已经登录了
                 if (isOpenPassword && isLogin) {
-                    Log.i("BaseActivity", "该显示弹窗了嗷")
+                    Log.e("BaseActivity", "该显示弹窗了嗷")
                 }
                 Log.e("BaseActivity", "onBecameForeground:前台")
             }
 
             override fun onBecameBackground() {
-                Log.e("BaseActivity", "onBecameForeground:后台")
+                Log.e("BaseActivity", "onBecameBackground:后台")
             }
         })
     }
